@@ -34,7 +34,7 @@ function setRefreshTokenCookie(res: Response, token: string): void {
     httpOnly: true,
     secure: config.cookie.secure,
     sameSite: config.cookie.sameSite,
-    path: `${config.apiPrefix}/auth`,
+    path: '/',
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 }
@@ -44,7 +44,7 @@ function clearRefreshTokenCookie(res: Response): void {
     httpOnly: true,
     secure: config.cookie.secure,
     sameSite: config.cookie.sameSite,
-    path: `${config.apiPrefix}/auth`,
+    path: '/',
   });
 }
 

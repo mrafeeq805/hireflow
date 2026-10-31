@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Emerald & Deep Navy Light Theme */
+    --background: 210 20% 97.5%; /* #F6F8F9 */
+    --foreground: 207 30% 21%;   /* #263746 */
+
+    --card: 0 0% 100%;           /* #FFFFFF */
+    --card-foreground: 207 30% 21%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 207 30% 21%;
+
+    --primary: 164 82% 34%;      /* #0F9D78 Emerald */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 206 25% 94%;
+    --secondary-foreground: 206 49% 15%;
+
+    --muted: 210 20% 94%;
+    --muted-foreground: 215 14% 48%; /* #718096 */
+
+    --accent: 157 58% 91%;        /* #D9F5EA Mint Accent */
+    --accent-foreground: 164 82% 25%;
+
+    --destructive: 356 65% 61%;   /* #DC5B62 */
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 204 27% 92%;        /* #E5EBEF */
+    --input: 204 27% 92%;
+    --ring: 164 82% 34%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Deep Navy & Emerald Dark Theme */
+    --background: 207 49% 9%;    /* #0B1822 */
+    --foreground: 210 40% 98%;
+
+    --card: 206 49% 15%;         /* #142B3B Deep Navy */
+    --card-foreground: 210 40% 98%;
+
+    --popover: 206 49% 15%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 164 82% 38%;      /* Emerald highlight */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 206 35% 22%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 206 30% 20%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 164 45% 20%;
+    --accent-foreground: 157 58% 91%;
+
+    --destructive: 356 65% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 206 30% 24%;
+    --input: 206 30% 24%;
+    --ring: 164 82% 38%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(113, 128, 150, 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(113, 128, 150, 0.5);
+}

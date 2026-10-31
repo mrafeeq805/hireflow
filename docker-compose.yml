@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: hireflow_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: hireflow
+      POSTGRES_PASSWORD: hireflow_secure_password_2026
+      POSTGRES_DB: hireflow_prod
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U hireflow -d hireflow_prod']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # HireFlow Unified Application (Frontend + Backend + WebSockets)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hireflow_app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '5000:5000'
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      API_PREFIX: /api/v1
+      DATABASE_URL: postgresql://hireflow:hireflow_secure_password_2026@postgres:5432/hireflow_prod?schema=public
+      JWT_ACCESS_SECRET: hireflow_prod_access_secret_key_random_64_chars_min_abc123!
+      JWT_REFRESH_SECRET: hireflow_prod_refresh_secret_key_random_64_chars_min_xyz789!
+      JWT_ACCESS_EXPIRES_IN: 15m
+      JWT_REFRESH_EXPIRES_IN: 7d
+      COOKIE_SECRET: hireflow_prod_cookie_secret_key_random_32_chars_1234
+      COOKIE_SECURE: 'false'
+      COOKIE_SAME_SITE: lax
+      STORAGE_DRIVER: local
+      STORAGE_LOCAL_DIR: ./uploads
+      STORAGE_MAX_FILE_SIZE: 10485760
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX_REQUESTS: 600
+    volumes:
+      - uploads_data:/app/apps/api/uploads
+
+volumes:
+  postgres_data:
+  uploads_data:
+

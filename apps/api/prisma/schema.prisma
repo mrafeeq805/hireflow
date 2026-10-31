@@ -1,0 +1,481 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String            @id @default(uuid())
+  email           String            @unique
+  passwordHash    String
+  name            String
+  avatarUrl       String?
+  themePreference String            @default("light")
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  ownedWorkspaces       Workspace[]           @relation("WorkspaceOwner")
+  memberships           WorkspaceMember[]
+  hiringManagerJobs     Job[]                 @relation("HiringManager")
+  assignedCandidates    Candidate[]           @relation("AssignedRecruiter")
+  assignedApplications  Application[]         @relation("AppRecruiter")
+  stageChanges          ApplicationStageHistory[] @relation("StageChangedBy")
+  interviewAssignments  Interviewer[]
+  scorecards            InterviewScorecard[]
+  assignedTasks         Task[]                @relation("TaskAssignee")
+  createdTasks          Task[]                @relation("TaskCreator")
+  comments              Comment[]
+  activityLogs          ActivityLog[]
+  notifications         Notification[]
+  refreshTokens         RefreshToken[]
+  invitationsSent       WorkspaceInvitation[] @relation("InviterUser")
+
+  @@index([email])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String   @unique
+  family    String
+  isRevoked Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, family])
+  @@index([tokenHash])
+}
+
+model Workspace {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String?
+  logoUrl     String?
+  ownerId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  owner         User                  @relation("WorkspaceOwner", fields: [ownerId], references: [id], onDelete: Restrict)
+  members       WorkspaceMember[]
+  invitations   WorkspaceInvitation[]
+  jobs          Job[]
+  candidates    Candidate[]
+  applications  Application[]
+  stages        ApplicationStage[]
+  interviews    Interview[]
+  offers        Offer[]
+  tasks         Task[]
+  comments      Comment[]
+  activityLogs  ActivityLog[]
+  notifications Notification[]
+
+  @@index([ownerId])
+  @@index([slug])
+}
+
+model WorkspaceMember {
+  id          String    @id @default(uuid())
+  workspaceId String
+  userId      String
+  role        String    @default("RECRUITER")
+  joinedAt    DateTime  @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+  @@index([workspaceId])
+  @@index([userId])
+}
+
+model WorkspaceInvitation {
+  id          String    @id @default(uuid())
+  workspaceId String
+  email       String
+  role        String    @default("RECRUITER")
+  token       String    @unique
+  inviterId   String
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  inviter   User      @relation("InviterUser", fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, email])
+  @@index([token])
+  @@index([workspaceId])
+}
+
+model ApplicationStage {
+  id              String   @id @default(uuid())
+  workspaceId     String
+  name            String
+  order           Int      @default(0)
+  color           String   @default("#0F9D78")
+  isSystemDefault Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+}
+
+model Job {
+  id                   String        @id @default(uuid())
+  workspaceId          String
+  title                String
+  department           String
+  location             String
+  employmentType       String        @default("FULL_TIME")
+  experienceLevel      String        @default("MID")
+  salaryMin            Float?
+  salaryMax            Float?
+  currency             String        @default("USD")
+  description          String
+  responsibilities     String?
+  vacancies            Int           @default(1)
+  status               String        @default("DRAFT")
+  publishedAt          DateTime?
+  closedAt             DateTime?
+  internalNotes        String?
+  hiringManagerId      String?
+  assignedRecruiterIds String?       @default("[]")
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  workspace     Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  hiringManager User?         @relation("HiringManager", fields: [hiringManagerId], references: [id], onDelete: SetNull)
+  skills        JobSkill[]
+  applications  Application[]
+  tasks         Task[]
+  comments      Comment[]
+
+  @@index([workspaceId])
+  @@index([status])
+  @@index([department])
+}
+
+model JobSkill {
+  id         String  @id @default(uuid())
+  jobId      String
+  name       String
+  isRequired Boolean @default(true)
+
+  job Job @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId])
+}
+
+model Candidate {
+  id                  String              @id @default(uuid())
+  workspaceId         String
+  fullName            String
+  email               String
+  phone               String?
+  location            String?
+  resumeUrl           String?
+  linkedinUrl         String?
+  portfolioUrl        String?
+  currentCompany      String?
+  expectedSalary      Float?
+  noticePeriodDays    Int?
+  availabilityDate    DateTime?
+  source              String              @default("DIRECT")
+  tags                String?             @default("[]")
+  experienceSummary   String?
+  educationSummary    String?
+  assignedRecruiterId String?
+  internalNotes       String?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  workspace         Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  assignedRecruiter User?               @relation("AssignedRecruiter", fields: [assignedRecruiterId], references: [id], onDelete: SetNull)
+  skills            CandidateSkill[]
+  documents         CandidateDocument[]
+  applications      Application[]
+  tasks             Task[]
+  comments          Comment[]
+
+  @@index([workspaceId])
+  @@index([workspaceId, email])
+}
+
+model CandidateSkill {
+  id          String @id @default(uuid())
+  candidateId String
+  name        String
+
+  candidate Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@index([candidateId])
+}
+
+model CandidateDocument {
+  id          String   @id @default(uuid())
+  candidateId String
+  fileName    String
+  fileUrl     String
+  fileSize    Int
+  fileType    String
+  uploadedAt  DateTime @default(now())
+
+  candidate Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@index([candidateId])
+}
+
+model Application {
+  id                  String                    @id @default(uuid())
+  workspaceId         String
+  jobId               String
+  candidateId         String
+  stage               String                    @default("APPLIED")
+  priority            String                    @default("MEDIUM")
+  status              String                    @default("ACTIVE")
+  rejectionReason     String?
+  assignedRecruiterId String?
+  internalNotes       String?
+  appliedAt           DateTime                  @default(now())
+  updatedAt           DateTime                  @updatedAt
+
+  workspace         Workspace                 @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  job               Job                       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  candidate         Candidate                 @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  assignedRecruiter User?                     @relation("AppRecruiter", fields: [assignedRecruiterId], references: [id], onDelete: SetNull)
+  stageHistory      ApplicationStageHistory[]
+  interviews        Interview[]
+  offers            Offer[]
+  tasks             Task[]
+  comments          Comment[]
+
+  @@unique([jobId, candidateId])
+  @@index([workspaceId])
+  @@index([jobId])
+  @@index([candidateId])
+  @@index([stage])
+  @@index([status])
+}
+
+model ApplicationStageHistory {
+  id            String   @id @default(uuid())
+  applicationId String
+  fromStage     String?
+  toStage       String
+  changedById   String?
+  notes         String?
+  createdAt     DateTime @default(now())
+
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  changedBy   User?       @relation("StageChangedBy", fields: [changedById], references: [id], onDelete: SetNull)
+
+  @@index([applicationId])
+  @@index([createdAt])
+}
+
+model Interview {
+  id              String               @id @default(uuid())
+  workspaceId     String
+  applicationId   String
+  type            String               @default("VIDEO")
+  status          String               @default("SCHEDULED")
+  outcome         String               @default("PENDING")
+  scheduledAt     DateTime
+  durationMinutes Int                  @default(45)
+  location        String?
+  meetingLink     String?
+  instructions    String?
+  outcomeNotes    String?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  workspace    Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  application  Application          @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  interviewers Interviewer[]
+  scorecards   InterviewScorecard[]
+
+  @@index([workspaceId])
+  @@index([applicationId])
+  @@index([scheduledAt])
+  @@index([status])
+}
+
+model Interviewer {
+  id          String   @id @default(uuid())
+  interviewId String
+  userId      String
+  assignedAt  DateTime @default(now())
+
+  interview Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([interviewId, userId])
+  @@index([interviewId])
+  @@index([userId])
+}
+
+model InterviewScorecard {
+  id                   String   @id @default(uuid())
+  interviewId          String
+  interviewerId        String
+  technicalRating      Int      @default(3)
+  communicationRating  Int      @default(3)
+  problemSolvingRating Int      @default(3)
+  experienceRating     Int      @default(3)
+  cultureFitRating     Int      @default(3)
+  averageRating        Float    @default(3.0)
+  recommendation       String   @default("YES")
+  summaryNotes         String
+  strengths            String?
+  areasToImprove       String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  interview   Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+  interviewer User      @relation(fields: [interviewerId], references: [id], onDelete: Cascade)
+
+  @@unique([interviewId, interviewerId])
+  @@index([interviewId])
+  @@index([interviewerId])
+}
+
+model Offer {
+  id                  String   @id @default(uuid())
+  workspaceId         String
+  applicationId       String
+  baseSalary          Float
+  currency            String   @default("USD")
+  bonus               Float?
+  equity              String?
+  proposedJoiningDate DateTime
+  expiryDate          DateTime
+  employmentType      String   @default("FULL_TIME")
+  status              String   @default("DRAFT")
+  declineReason       String?
+  notes               String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([applicationId])
+  @@index([status])
+}
+
+model Task {
+  id            String    @id @default(uuid())
+  workspaceId   String
+  title         String
+  description   String?
+  type          String    @default("GENERAL")
+  priority      String    @default("MEDIUM")
+  status        String    @default("TODO")
+  dueDate       DateTime
+  reminderAt    DateTime?
+  isCompleted   Boolean   @default(false)
+  completedAt   DateTime?
+  assigneeId    String?
+  createdById   String?
+  candidateId   String?
+  jobId         String?
+  applicationId String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  workspace   Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  assignee    User?        @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  creator     User?        @relation("TaskCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  candidate   Candidate?   @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  job         Job?         @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  application Application? @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([assigneeId])
+  @@index([dueDate])
+  @@index([status])
+}
+
+model Comment {
+  id            String       @id @default(uuid())
+  workspaceId   String
+  userId        String
+  candidateId   String?
+  applicationId String?
+  jobId         String?
+  content       String
+  mentions      String?      @default("[]")
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  workspace   Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  candidate   Candidate?   @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  application Application? @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  job         Job?         @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  attachments Attachment[]
+
+  @@index([workspaceId])
+  @@index([candidateId])
+  @@index([applicationId])
+  @@index([jobId])
+}
+
+model Attachment {
+  id        String   @id @default(uuid())
+  commentId String
+  fileName  String
+  fileUrl   String
+  fileSize  Int
+  fileType  String
+  createdAt DateTime @default(now())
+
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@index([commentId])
+}
+
+model ActivityLog {
+  id          String   @id @default(uuid())
+  workspaceId String
+  userId      String?
+  action      String
+  entityType  String
+  entityId    String
+  details     String?
+  createdAt   DateTime @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
+
+model Notification {
+  id          String   @id @default(uuid())
+  workspaceId String
+  userId      String
+  type        String
+  title       String
+  message     String
+  link        String?
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, userId])
+  @@index([isRead])
+  @@index([createdAt])
+}

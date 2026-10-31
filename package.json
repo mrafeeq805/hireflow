@@ -1,0 +1,41 @@
+{
+  "name": "hireflow-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HireFlow — Premium Recruitment & Applicant Tracking SaaS",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "dev:api": "npm run dev --workspace=apps/api",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "build": "npm run build --workspaces --if-present",
+    "build:shared": "npm run build --workspace=packages/shared",
+    "build:api": "npm run build --workspace=apps/api",
+    "build:web": "npm run build --workspace=apps/web",
+    "start:api": "node apps/api/dist/server.js",
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "db:postgres": "npm run db:postgres --workspace=apps/api",
+    "db:sqlite": "npm run db:sqlite --workspace=apps/api",
+    "db:generate": "npm run db:generate --workspace=apps/api",
+    "db:migrate": "npm run db:migrate --workspace=apps/api",
+    "db:push": "npm run db:push --workspace=apps/api",
+    "db:seed": "npm run db:seed --workspace=apps/api"
+  },
+  "keywords": [
+    "recruitment",
+    "ats",
+    "applicant-tracking",
+    "saas",
+    "react",
+    "express",
+    "prisma",
+    "socketio",
+    "typescript"
+  ],
+  "author": "HireFlow Team",
+  "license": "MIT"
+}

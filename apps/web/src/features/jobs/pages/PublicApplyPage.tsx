@@ -124,14 +124,14 @@ export function PublicApplyPage() {
   return (
     <div className="min-h-screen bg-slate-50/60 dark:bg-[#0B1822] text-slate-800 dark:text-slate-100 pb-16">
       {/* Header */}
-      <header className="border-b border-slate-200 bg-white/80 backdrop-blur-md px-6 py-4 dark:border-slate-800 dark:bg-[#142B3B]/80 sticky top-0 z-20">
+      <header className="border-b border-slate-200 bg-white/80 backdrop-blur-md px-4 sm:px-6 py-3 sm:py-4 dark:border-slate-800 dark:bg-[#142B3B]/80 sticky top-0 z-20">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <Link
             to={`/jobs/public/${job.id}`}
-            className="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors"
+            className="inline-flex items-center gap-1.5 sm:gap-2 text-xs font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span>Back to Job Details</span>
+            <span>Back to Job</span>
           </Link>
           <div className="flex items-center gap-2 text-xs font-medium text-slate-500">
             <span>Powered by</span>
@@ -141,21 +141,21 @@ export function PublicApplyPage() {
       </header>
 
       {/* Main Container */}
-      <main className="max-w-3xl mx-auto px-6 pt-8">
+      <main className="max-w-3xl mx-auto px-3.5 sm:px-6 pt-5 sm:pt-8">
         {/* Success Confirmation Card */}
         {isSubmitted ? (
-          <div className="bg-white rounded-xl border border-slate-200 p-8 sm:p-12 text-center shadow-sm dark:border-slate-800 dark:bg-[#142B3B]">
-            <div className="h-16 w-16 bg-[#D9F5EA] text-[#0F9D78] rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 className="h-8 w-8" />
+          <div className="bg-white rounded-xl border border-slate-200 p-6 sm:p-12 text-center shadow-sm dark:border-slate-800 dark:bg-[#142B3B]">
+            <div className="h-14 w-14 sm:h-16 sm:w-16 bg-[#D9F5EA] text-[#0F9D78] rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle2 className="h-7 w-7 sm:h-8 sm:w-8" />
             </div>
-            <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">
               Application Received!
             </h2>
-            <p className="text-sm text-slate-600 dark:text-slate-300 mt-2 max-w-md mx-auto">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-2 max-w-md mx-auto">
               Thank you for applying to the <span className="font-semibold">{job.title}</span> position at{' '}
               <span className="font-semibold">{job.workspace?.name}</span>. Our hiring team will review your profile and contact you if there is a match.
             </p>
-            <div className="mt-8 flex justify-center gap-3">
+            <div className="mt-6 sm:mt-8 flex justify-center gap-3">
               <Button onClick={() => navigate(`/jobs/public/${job.id}`)} variant="outline">
                 View Job Description
               </Button>
@@ -164,7 +164,7 @@ export function PublicApplyPage() {
         ) : (
           <div className="bg-white rounded-xl border border-slate-200/80 shadow-xs dark:border-slate-800 dark:bg-[#142B3B] overflow-hidden">
             {/* Header info */}
-            <div className="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/20">
+            <div className="p-4 sm:p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/20">
               <div className="flex items-center gap-2 mb-2">
                 <Badge variant="mint" className="text-[11px] font-semibold">
                   {job.department}

@@ -185,7 +185,7 @@ export function InterviewFeedbackPage() {
         )}
 
         {/* Competencies Rating Matrix */}
-        <Card className="p-6 space-y-5">
+        <Card className="p-4 sm:p-6 space-y-5">
           <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             1. Core Competency Ratings (1 to 5)
           </h3>
@@ -225,7 +225,7 @@ export function InterviewFeedbackPage() {
         </Card>
 
         {/* Recommendation */}
-        <Card className="p-6 space-y-4">
+        <Card className="p-4 sm:p-6 space-y-4">
           <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             2. Overall Recommendation
           </h3>
@@ -249,7 +249,7 @@ export function InterviewFeedbackPage() {
         </Card>
 
         {/* Written Notes */}
-        <Card className="p-6 space-y-4">
+        <Card className="p-4 sm:p-6 space-y-4">
           <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             3. Qualitative Feedback
           </h3>

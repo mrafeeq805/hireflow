@@ -146,7 +146,7 @@ export function CreateEditJobPage() {
         ]}
       />
 
-      <Card className="p-6">
+      <Card className="p-4 sm:p-6">
         {error && (
           <div className="mb-6 p-3 bg-red-50 border border-red-200 text-xs text-red-600 rounded-md">
             {error}
@@ -299,11 +299,11 @@ export function CreateEditJobPage() {
             />
           </FormField>
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
-            <Button type="button" variant="outline" onClick={() => navigate('/jobs')}>
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-2.5 sm:gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <Button type="button" variant="outline" onClick={() => navigate('/jobs')} className="w-full sm:w-auto">
               Cancel
             </Button>
-            <Button type="submit" isLoading={saveMutation.isPending}>
+            <Button type="submit" isLoading={saveMutation.isPending} className="w-full sm:w-auto">
               {isEditing ? 'Save Changes' : 'Publish Job'}
             </Button>
           </div>

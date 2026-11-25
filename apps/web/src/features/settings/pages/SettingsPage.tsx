@@ -134,7 +134,7 @@ export function SettingsPage() {
 
         {/* Tab 1: Profile */}
         <TabsContent value="profile" className="mt-4 space-y-4">
-          <Card className="p-6">
+          <Card className="p-4 sm:p-6">
             <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-1">
               Personal Information
             </h3>
@@ -193,7 +193,7 @@ export function SettingsPage() {
 
         {/* Tab 2: Workspace */}
         <TabsContent value="workspace" className="mt-4 space-y-4">
-          <Card className="p-6">
+          <Card className="p-4 sm:p-6">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white">
@@ -336,7 +336,7 @@ export function SettingsPage() {
 
         {/* Tab 4: Appearance */}
         <TabsContent value="appearance" className="mt-4 space-y-4">
-          <Card className="p-6">
+          <Card className="p-4 sm:p-6">
             <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-1">
               Visual Appearance
             </h3>

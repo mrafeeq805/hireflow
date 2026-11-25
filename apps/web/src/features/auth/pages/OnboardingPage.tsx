@@ -37,12 +37,12 @@ export function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-slate-50 dark:bg-[#0B1822]">
+    <div className="min-h-screen flex flex-col justify-center py-8 sm:py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-[#0B1822]">
       <div className="sm:mx-auto sm:w-full sm:max-w-lg text-center mb-6">
         <div className="flex justify-center mb-4">
           <Logo size="lg" clickable={false} />
         </div>
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
           Welcome to HireFlow
         </h2>
         <p className="mt-1 text-xs text-slate-500">
@@ -51,7 +51,7 @@ export function OnboardingPage() {
       </div>
 
       <div className="sm:mx-auto sm:w-full sm:max-w-lg">
-        <div className="bg-white py-8 px-6 shadow-card rounded-xl border border-slate-200/80 sm:px-10 dark:bg-[#142B3B] dark:border-slate-800">
+        <div className="bg-white py-6 px-4 shadow-card rounded-xl border border-slate-200/80 sm:py-8 sm:px-10 dark:bg-[#142B3B] dark:border-slate-800">
           {step === 1 && (
             <div className="space-y-5">
               <div className="flex items-center gap-3">

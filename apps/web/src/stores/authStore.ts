@@ -34,6 +34,11 @@ export const useAuthStore = create<AuthState>((set) => ({
       const match = workspaces.find((w) => w.id === activeWorkspaceId);
       if (match) active = match;
     }
+    try {
+      localStorage.setItem('hireflow_session_active', '1');
+    } catch {
+      // Ignore storage errors in private browsing
+    }
     set({
       user,
       workspaces,
@@ -59,6 +64,11 @@ export const useAuthStore = create<AuthState>((set) => ({
     })),
 
   logout: () => {
+    try {
+      localStorage.removeItem('hireflow_session_active');
+    } catch {
+      // Ignore storage errors in private browsing
+    }
     set({
       user: null,
       workspaces: [],

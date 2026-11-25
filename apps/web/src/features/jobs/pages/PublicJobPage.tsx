@@ -60,25 +60,25 @@ export function PublicJobPage() {
   return (
     <div className="min-h-screen bg-slate-50/60 dark:bg-[#0B1822] text-slate-800 dark:text-slate-100">
       {/* Public Header */}
-      <header className="border-b border-slate-200 bg-white/80 backdrop-blur-md px-6 py-4 dark:border-slate-800 dark:bg-[#142B3B]/80 sticky top-0 z-20">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
+      <header className="border-b border-slate-200 bg-white/80 backdrop-blur-md px-4 sm:px-6 py-3 sm:py-4 dark:border-slate-800 dark:bg-[#142B3B]/80 sticky top-0 z-20">
+        <div className="max-w-4xl mx-auto flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
             {job.workspace?.logoUrl ? (
               <img
                 src={job.workspace.logoUrl}
                 alt="Logo"
-                className="h-8 w-8 rounded-lg object-cover"
+                className="h-8 w-8 rounded-lg object-cover shrink-0"
               />
             ) : (
-              <div className="h-8 w-8 rounded-lg bg-[#142B3B] flex items-center justify-center text-white font-bold text-sm">
+              <div className="h-8 w-8 rounded-lg bg-[#142B3B] flex items-center justify-center text-white font-bold text-sm shrink-0">
                 {job.workspace?.name?.charAt(0) || 'H'}
               </div>
             )}
-            <div>
-              <span className="font-bold text-sm text-slate-900 dark:text-white">
+            <div className="truncate">
+              <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white truncate block">
                 {job.workspace?.name || 'Company'}
               </span>
-              <span className="text-[11px] text-slate-400 block leading-none">
+              <span className="text-[10px] sm:text-[11px] text-slate-400 block leading-none truncate">
                 Careers & Opportunities
               </span>
             </div>
@@ -87,18 +87,19 @@ export function PublicJobPage() {
           <Button
             onClick={() => navigate(`/jobs/${job.id}/apply`)}
             size="sm"
-            className="font-semibold shadow-xs"
+            className="font-semibold shadow-xs shrink-0"
           >
-            <span>Apply for this Job</span>
-            <ArrowRight className="h-3.5 w-3.5 ml-1.5" />
+            <span className="hidden sm:inline">Apply for this Job</span>
+            <span className="sm:hidden">Apply Now</span>
+            <ArrowRight className="h-3.5 w-3.5 ml-1 sm:ml-1.5" />
           </Button>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto p-6 py-10 space-y-8">
+      <main className="max-w-4xl mx-auto p-4 sm:p-6 py-6 sm:py-10 space-y-6 sm:space-y-8">
         {/* Banner */}
-        <div className="bg-white rounded-xl border border-slate-200/80 p-8 shadow-xs dark:border-slate-800 dark:bg-[#142B3B]">
+        <div className="bg-white rounded-xl border border-slate-200/80 p-5 sm:p-8 shadow-xs dark:border-slate-800 dark:bg-[#142B3B]">
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <Badge variant="mint" className="text-xs uppercase font-bold tracking-wide">
               {job.department}
@@ -108,7 +109,7 @@ export function PublicJobPage() {
             </Badge>
           </div>
 
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             {job.title}
           </h1>
 

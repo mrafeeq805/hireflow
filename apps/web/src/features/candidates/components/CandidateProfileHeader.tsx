@@ -29,22 +29,22 @@ export function CandidateProfileHeader({
   onUploadDoc,
 }: CandidateProfileHeaderProps) {
   return (
-    <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-[#142B3B]/40 mb-6">
+    <div className="rounded-xl border border-slate-200/80 bg-white p-4 sm:p-6 shadow-xs dark:border-slate-800 dark:bg-[#142B3B]/40 mb-6">
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
         {/* Left: Avatar + Identity */}
-        <div className="flex items-start gap-4">
-          <Avatar className="h-16 w-16 shrink-0 ring-2 ring-[#0F9D78]/30">
-            <AvatarFallback className="bg-[#D9F5EA] text-[#0F9D78] font-bold text-xl">
+        <div className="flex flex-col sm:flex-row items-start gap-4">
+          <Avatar className="h-14 w-14 sm:h-16 sm:w-16 shrink-0 ring-2 ring-[#0F9D78]/30">
+            <AvatarFallback className="bg-[#D9F5EA] text-[#0F9D78] font-bold text-lg sm:text-xl">
               {getInitials(candidate.fullName)}
             </AvatarFallback>
           </Avatar>
 
           <div>
-            <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+            <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">
                 {candidate.fullName}
               </h1>
-              <Badge variant="mint" className="capitalize">
+              <Badge variant="mint" className="capitalize text-[11px] sm:text-xs">
                 Source: {candidate.source?.toLowerCase().replace('_', ' ')}
               </Badge>
             </div>

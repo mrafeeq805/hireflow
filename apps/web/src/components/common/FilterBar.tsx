@@ -36,12 +36,12 @@ export function FilterBar({
       {searchComponent}
 
       {filters?.map((filter, idx) => (
-        <div key={idx} className="flex items-center gap-2">
-          <label className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+        <div key={idx} className="flex items-center gap-2 max-w-full flex-wrap sm:flex-nowrap">
+          <label className="text-xs font-semibold text-slate-500 dark:text-slate-400 shrink-0">
             {filter.label}:
           </label>
           <select
-            className="text-xs font-medium px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#142B3B] text-slate-800 dark:text-slate-200 focus:outline-hidden"
+            className="text-xs font-medium px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#142B3B] text-slate-800 dark:text-slate-200 focus:outline-hidden max-w-[220px] sm:max-w-none truncate"
             value={filter.value}
             onChange={(e) => filter.onChange(e.target.value)}
           >

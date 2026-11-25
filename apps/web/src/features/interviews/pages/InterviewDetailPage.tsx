@@ -126,7 +126,7 @@ export function InterviewDetailPage() {
         {/* Left 2 Cols: Details & Scorecards */}
         <div className="lg:col-span-2 space-y-6">
           {/* Interview Overview Card */}
-          <Card className="p-6">
+          <Card className="p-4 sm:p-6">
             <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
               <div className="flex items-center gap-2">
                 <Badge variant="navy" className="text-xs">

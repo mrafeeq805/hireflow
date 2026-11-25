@@ -78,7 +78,7 @@ export function NotificationCenter() {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-80 p-0 shadow-dropdown">
+      <DropdownMenuContent align="end" className="w-[calc(100vw-2rem)] sm:w-80 p-0 shadow-dropdown max-w-sm">
         <div className="flex items-center justify-between border-b border-slate-100 p-3 dark:border-slate-800">
           <span className="text-xs font-bold text-slate-800 dark:text-slate-100">
             Notifications ({unreadCount} new)

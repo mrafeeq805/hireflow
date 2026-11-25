@@ -49,12 +49,12 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-slate-50 dark:bg-[#0B1822]">
+    <div className="min-h-screen flex flex-col justify-center py-8 sm:py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-[#0B1822]">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <div className="flex justify-center mb-4">
           <Logo size="lg" clickable={false} />
         </div>
-        <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        <h2 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
           Sign in to your recruitment workspace
         </h2>
         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
@@ -63,7 +63,7 @@ export function LoginPage() {
       </div>
 
       <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-6 shadow-card rounded-xl border border-slate-200/80 sm:px-10 dark:bg-[#142B3B] dark:border-slate-800">
+        <div className="bg-white py-6 px-4 shadow-card rounded-xl border border-slate-200/80 sm:py-8 sm:px-10 dark:bg-[#142B3B] dark:border-slate-800">
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 text-xs text-red-600 rounded-lg dark:bg-red-950/40 dark:border-red-800 dark:text-red-300">
               {error}

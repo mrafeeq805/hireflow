@@ -9,6 +9,7 @@ import {
   UserPlus,
   Wifi,
   WifiOff,
+  Menu,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -32,12 +33,14 @@ interface TopbarProps {
   onOpenCommandMenu: () => void;
   onOpenCreateJob?: () => void;
   onOpenCreateCandidate?: () => void;
+  onOpenMobileSidebar?: () => void;
 }
 
 export function Topbar({
   onOpenCommandMenu,
   onOpenCreateJob,
   onOpenCreateCandidate,
+  onOpenMobileSidebar,
 }: TopbarProps) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -76,16 +79,26 @@ export function Topbar({
   const pageTitle = pageTitleMap[pathName] || 'Recruitment Platform';
 
   return (
-    <header className="h-14 border-b border-slate-200/80 bg-white/90 backdrop-blur-md px-4 flex items-center justify-between z-20 dark:border-slate-800 dark:bg-[#0B1822]/90">
-      {/* Left: Breadcrumbs / Title */}
-      <div className="flex items-center space-x-3">
-        <h1 className="text-sm font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+    <header className="h-14 border-b border-slate-200/80 bg-white/90 backdrop-blur-md px-3 sm:px-4 flex items-center justify-between z-20 dark:border-slate-800 dark:bg-[#0B1822]/90 shrink-0">
+      {/* Left: Mobile Menu Trigger + Breadcrumbs / Title */}
+      <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+        {onOpenMobileSidebar && (
+          <button
+            onClick={onOpenMobileSidebar}
+            className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white transition-colors cursor-pointer shrink-0"
+            aria-label="Open navigation menu"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        )}
+
+        <h1 className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 truncate max-w-[150px] sm:max-w-xs md:max-w-none">
           {pageTitle}
         </h1>
 
         {/* Real-time Socket status indicator */}
         <div
-          className="hidden md:flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-500"
+          className="hidden md:flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-500 shrink-0"
           title={isConnected ? 'Live real-time sync active' : 'Connecting to live sync...'}
         >
           {isConnected ? (
